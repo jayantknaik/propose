@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>To my love, Ishita 💖</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            font-family: "Geist", sans-serif;
+            font-optical-sizing: auto;
+            height: 100vh;
+            margin: 0;
+            background: url("./assets/propose-bg.svg") no-repeat center center;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+
+        .container {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 26px;
+        }
+
+        p {
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            position: relative;
+            height: 80px;
+        }
+
+        button {
+            padding: 12px 26px;
+            font-size: 16px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: absolute;
+        }
+
+        #yesBtn {
+            background: #ff4d6d;
+            color: white;
+            left: 50%;
+            transform: translateX(-120%);
+        }
+
+        #noBtn {
+            background: #e0e0e0;
+            color: #333;
+            left: 50%;
+            transform: translateX(20%);
+        }
+
+        .success {
+            display: none;
+        }
+
+        .success h2 {
+            color: #ff4d6d;
+            font-size: 28px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container" id="card">
+        <h1>Hi my cutest, most beautiful, best girl ever (Ishita) 😘</h1>
+        <p>Will you be my Valentine?</p>
+
+        <div class="buttons">
+            <button id="yesBtn">Yes 🥰</button>
+            <button id="noBtn">No 😭</button>
+        </div>
+
+        <div class="success" id="success">
+            <h2>Yayyyy! 🥰</h2>
+            <p>You’re the kindest, most loving, and most beautiful girlfriend I could ever ask for. ❤️</p>
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById("noBtn");
+        const yesBtn = document.getElementById("yesBtn");
+        const card = document.getElementById("card");
+        const success = document.getElementById("success");
+
+        noBtn.addEventListener("mouseenter", () => {
+            const containerWidth = card.offsetWidth - noBtn.offsetWidth;
+            const containerHeight = card.offsetHeight - noBtn.offsetHeight;
+
+            const randomX = Math.random() * containerWidth;
+            const randomY = Math.random() * containerHeight;
+
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
+        });
+
+        yesBtn.addEventListener("click", () => {
+            card.querySelector("h1").style.display = "none";
+            card.querySelector("p").style.display = "none";
+            card.querySelector(".buttons").style.display = "none";
+            success.style.display = "block";
+        });
+    </script>
+
+</body>
+
+</html>
