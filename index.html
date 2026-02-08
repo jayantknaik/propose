@@ -5,29 +5,33 @@
     <meta charset="UTF-8" />
     <title>To my love, Ishita 💖</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+
     <style>
         * {
             box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
+            font-family: "Geist", sans-serif;
         }
 
         body {
-            font-family: "Geist", sans-serif;
-            font-optical-sizing: auto;
             height: 100vh;
             margin: 0;
-            background: url("./assets/propose-bg.svg") no-repeat center center;
-            background-size: cover;
+            background: linear-gradient(135deg,
+                    #fff1f3 0%,
+                    #ffccd5 18%,
+                    #ff8fa3 38%,
+                    #ff4d6d 62%,
+                    #c9184a 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             color: #333;
+            overflow: hidden;
         }
+
 
         .container {
             background: white;
@@ -38,6 +42,7 @@
             max-width: 700px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             position: relative;
+            animation: popIn 520ms cubic-bezier(.2, .9, .2, 1) both;
         }
 
         h1 {
@@ -48,6 +53,7 @@
         p {
             font-size: 16px;
             margin-bottom: 30px;
+            line-height: 1.6;
         }
 
         .buttons {
@@ -61,31 +67,87 @@
             border-radius: 30px;
             border: none;
             cursor: pointer;
-            transition: all 0.3s ease;
             position: absolute;
+            opacity: 0;
+            transition: left 0.25s ease, top 0.25s ease, transform 0.2s ease;
+            --tx: 0%;
+            --delay: 0s;
+            animation: btnSlideUp 600ms cubic-bezier(.2, .9, .2, 1) var(--delay) forwards;
         }
 
         #yesBtn {
             background: #FD5E61;
             color: white;
             left: 50%;
-            transform: translateX(-120%);
+            --tx: -120%;
+            transform: translateX(var(--tx));
+            --delay: 0.08s;
         }
 
         #noBtn {
             background: #e0e0e0;
             color: #333;
             left: 50%;
-            transform: translateX(20%);
+            --tx: 20%;
+            transform: translateX(var(--tx));
+            --delay: 0.22s;
+        }
+
+        button:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+            filter: brightness(1.03);
         }
 
         .success {
             display: none;
+            opacity: 0;
+            transform: scale(0.96);
+        }
+
+        .success.show {
+            display: block;
+            animation: successReveal 520ms cubic-bezier(.2, .9, .2, 1) both;
         }
 
         .success h2 {
             color: #ff4d6d;
             font-size: 28px;
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px) scale(0.99);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes btnSlideUp {
+            from {
+                opacity: 0;
+                transform: translateX(var(--tx)) translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(var(--tx)) translateY(0);
+            }
+        }
+
+        @keyframes successReveal {
+            from {
+                opacity: 0;
+                transform: scale(0.92);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
     </style>
 </head>
@@ -94,7 +156,13 @@
 
     <div class="container" id="card">
         <h1>Hi my cutest, most beautiful, best girl ever (Ishita) 😘</h1>
-        <p>From the moment you walked into my life, everything felt warmer and brighter. You make me smile without trying and feel loved without asking. I don't want a perfect story, I just want ours. Will you be mine? ❤️</p>
+
+        <p>
+            From the moment you walked into my life, everything felt warmer and brighter.
+            You make me smile without trying and feel loved without asking.
+            I don't want a perfect story, I just want ours.
+            Will you be mine? ❤️
+        </p>
 
         <div class="buttons">
             <button id="yesBtn">Yes 🥰</button>
@@ -103,7 +171,10 @@
 
         <div class="success" id="success">
             <h2>Yayyyy! 🥰</h2>
-            <p>You're the kindest, most loving, and most beautiful girlfriend I could ever ask for. ❤️</p>
+            <p>
+                You're the kindest, most loving, and most beautiful girlfriend
+                I could ever ask for. ❤️
+            </p>
         </div>
     </div>
 
@@ -113,22 +184,49 @@
         const card = document.getElementById("card");
         const success = document.getElementById("success");
 
-        noBtn.addEventListener("mouseenter", () => {
-            const containerWidth = card.offsetWidth - noBtn.offsetWidth;
-            const containerHeight = card.offsetHeight - noBtn.offsetHeight;
+        function moveNoButton() {
+            const btnRect = noBtn.getBoundingClientRect();
+            const cardRect = card.getBoundingClientRect();
 
-            const randomX = Math.random() * containerWidth;
-            const randomY = Math.random() * containerHeight;
+            const padding = 16;
 
+            const minX = cardRect.left + padding;
+            const maxX = cardRect.right - btnRect.width - padding;
+
+            const minY = cardRect.top + padding;
+            const maxY = Math.min(
+                cardRect.bottom - btnRect.height - padding,
+                window.innerHeight - btnRect.height - padding
+            );
+
+            const randomX = Math.random() * (maxX - minX) + minX;
+            const randomY = Math.random() * (maxY - minY) + minY;
+
+            noBtn.style.position = "fixed";
             noBtn.style.left = `${randomX}px`;
             noBtn.style.top = `${randomY}px`;
+        }
+
+        // Desktop
+        noBtn.addEventListener("mouseenter", moveNoButton);
+
+        // Mobile
+        noBtn.addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            moveNoButton();
+        });
+
+        // Extra safety
+        noBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            moveNoButton();
         });
 
         yesBtn.addEventListener("click", () => {
             card.querySelector("h1").style.display = "none";
             card.querySelector("p").style.display = "none";
             card.querySelector(".buttons").style.display = "none";
-            success.style.display = "block";
+            success.classList.add("show");
         });
     </script>
 
