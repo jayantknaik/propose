@@ -228,6 +228,17 @@
             card.querySelector(".buttons").style.display = "none";
             success.classList.add("show");
         });
+        noBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            alert("You tapped No… but my heart says Yes 💕");
+
+            // Small delay for dramatic effect
+            setTimeout(() => {
+                yesBtn.click();
+            }, 300);
+        });
+
     </script>
 
 </body>
